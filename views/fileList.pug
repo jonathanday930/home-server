@@ -1,6 +1,7 @@
 
-p #{linkPreface.toUpperCase()}
-
+p #{ linkPreface }
 
 each val in files
-    a(href=linkPreface+val) #{val} </br>
+    -var url=val
+    p #{url}
+    a(href=`${url}`) #{val} </br>
