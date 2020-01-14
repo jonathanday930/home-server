@@ -61,5 +61,5 @@ const homeDirectory = '/home/jonathan/node-projects/home-server'
   return res.redirect(path.join('../file/view/',req.params.path))
 }
 });
-
+  
 module.exports = router
