@@ -57,8 +57,8 @@ const homeDirectory = '/home/jonathan/node-projects/home-server'
   );
 } else{
   console.log('sending file')
-  console.log(`redirecting to ${path.join('/file/',req.params.path)}`)
-  return res.redirect(path.join('file/',req.params.path))
+  console.log(`redirecting to ${path.join('/file/view',req.params.path)}`)
+  return res.redirect(path.join('../file/view/',req.params.path))
 }
 });
 
