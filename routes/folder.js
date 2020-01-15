@@ -3,7 +3,6 @@ const util = require('util');
 const path = require('path')
 var parseUrl = require('parseurl');
 const express = require('express')
-// express.json({'strict': true})
 
 router = express.Router()
 
@@ -46,20 +45,25 @@ const homeDirectory = '/home/jonathan/node-projects/home-server'
       console.log('this is important')
     files = []
   }
-    // links = []
-    // for (i in files){
-    //   links.push(path.join(req.params.path,files[i]))
-    // }
+
+    links = []
+    for (i in files){
+      links.push({link:path.join('/folder/',req.params.path,files[i]), title: files[i]})
+      console.log(path.join('/',req.params.path,files[i]))
+    }
+
+
     console.log(`files is: ${files}` )
-    console.log(`passing these to pug: ${files} and ${req.params.path}`)
-    res.render('folder',{files : files, linkPreface:req.params.path} )
+    console.log(`passing these to pug: ${links} and ${req.params.path}`)
+    res.render('folder',{files : links, title:req.params.path} )
   }
   );
 } else{
   console.log('sending file')
-  console.log(`redirecting to ${path.join('/file/view',req.params.path)}`)
-  return res.redirect(path.join('../file/view/',req.params.path))
+  path1 = path.join('../../filee/view/',req.params.path)
+  console.log(`redirecting to ${path1}`)
+  return res.redirect(path.join('/../file/view/',req.params.path))
 }
 });
-  
+
 module.exports = router
