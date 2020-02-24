@@ -9,7 +9,7 @@ router = express.Router()
 
 const stat = util.promisify(fs.stat)
 
-const homeDirectory = '/home/jonathan/node-projects/home-server'
+const homeDirectory = '/home/jonathan/cs176/'
 
  router.get('/:path(*)',async (req,res)=> {
 
