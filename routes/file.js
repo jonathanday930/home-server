@@ -42,7 +42,7 @@ router.get('/video/:path(*)',async (req,res) => {
     const chunksize = 300 * 1024
     const stat = fs.statSync(pathRequested)
     const fileSize = stat.size
-    const bytesbuffer = 16
+    const bytesbuffer = 160
     const range = req.headers.range
     console.log(`range ${range}`)
     if (range) {
@@ -77,6 +77,8 @@ router.get('/video/:path(*)',async (req,res) => {
       file.pipe(res)
 
     }
+
+    // res.render('video',{fileName:req.params.path,videoLink: path.join('/file/video/',req.params.path) ,link:path.join('/file/download/',req.params.path)})
 
 
 
