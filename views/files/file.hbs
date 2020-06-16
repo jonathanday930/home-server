@@ -1,0 +1,11 @@
+
+<h1> {{ fileName }} </h1>
+
+<a href="{{link}}"> Download </a> </br>
+
+{{#if videoLink}}
+<a href="{{videoLink}}"> Video </a> </br>
+<video id="videoPlayer" controls>
+  <source src="http://localhost:3000{{videoLink}}" type="video/mp4">
+</video>
+{{/if}}

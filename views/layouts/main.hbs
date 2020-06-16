@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang = 'en'>
+
+<head>
+  <meta charset="utf-8">
+  <title> Jday's file storage system </title>
+
+  <script>
+            window.onload = function() {
+              var logout = document.getElementById("logoutLink");
+                logout.onclick = function() {
+                    
+                return true
+                }
+            }
+
+
+  </script>
+</head>
+
+<body>
+
+<div>
+{{{ body }}}
+</div>
+
+<div>
+{{#if user}}
+<br/>
+Username: {{user.username}}
+    <br/>
+      <a id="viewFiles" href="/files/view/">view files</a>        
+    <br/>     
+      <a id="logoutLink" href="/user/logout/">Logout</a>
+   
+
+{{/if}}</div>
+
+</body>
+</html>
