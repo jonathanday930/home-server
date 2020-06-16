@@ -2,7 +2,10 @@ const fs = require('fs')
 const express = require('express')
 const util = require('util')
 const path = require('path')
+const auth = require('../middleware/auth')
 router = express.Router()
+
+
 
 const config= require('config')
 
@@ -17,7 +20,9 @@ function isVideo(fileName){
   return videoExtensions.includes(extension)
 }
 
-router.get('/view/:path(*)',async (req,res)=> {
+router.get('/view/:path(*)',auth,async (req,res)=> {
+  renderParams = {}
+  renderParams.user=req.user
 
   console.log(`file params are ${req.params.path}`)
 
@@ -26,7 +31,6 @@ router.get('/view/:path(*)',async (req,res)=> {
   console.log(`searching file ${pathRequested}`)
 
   fileStat = await stat(pathRequested)
-
   if (fileStat.isDirectory()){
     fs.readdir(pathRequested,(err,files)=>{
       if (! files== null){
@@ -39,25 +43,22 @@ router.get('/view/:path(*)',async (req,res)=> {
         links.push({link:path.join('/files/view/',req.params.path,files[i]), title: files[i]})
         console.log(path.join('/',req.params.path,files[i]))
       }
+      renderParams.files = links
+      renderParams.title = req.params.path
 
-
-      console.log(`files is: ${files}` )
-      console.log(`passing these to pug: ${links} and ${req.params.path}`)
-      res.render('folder',{files : links, title:req.params.path} )
+      res.render('files/folder',renderParams )
     });
 
   }else{
-    console.log('rendering page')
-    console.log('ISVIDEO for: ')
-    console.log(req.params.path)
 
-    console.log(isVideo(req.params.path))
-    paramObject = {fileName:req.params.path ,link:path.join('/files/download/',req.params.path)}
+    // renderParams = Object.defineProperties(renderParams,)
+    renderParams.fileName=req.params.path
+    renderParams.link = path.join('/files/download/',req.params.path)
     if (isVideo(req.params.path)){
-      paramObject.videoLink= path.join('/files/video/',req.params.path)
+      renderParams.videoLink= path.join('/files/video/',req.params.path)
     }
 
-    res.render('file',paramObject)
+    res.render('files/file',renderParams)
     // res.redirect(path.join('/download',req.params.path))
 
     console.log('rendering complete')
@@ -67,7 +68,8 @@ router.get('/view/:path(*)',async (req,res)=> {
 
 });
 
-router.get('/video/:path(*)',async (req,res) => {
+router.get('/video/:path(*)',auth,async (req,res) => {
+
   pathRequested = path.join(homeDirectory,req.params.path)
 
   console.log(`video called for ${path.join(homeDirectory,req.params.path)}`)
@@ -124,7 +126,7 @@ router.get('/video/:path(*)',async (req,res) => {
 
 
 
-router.get('/download/:path(*)',async (req,res) => {
+router.get('/download/:path(*)',auth,async (req,res) => {
   pathRequested = path.join(homeDirectory,req.params.path)
 
   console.log(`Download called for ${path.join(homeDirectory,req.params.path)}`)

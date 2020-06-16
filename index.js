@@ -6,9 +6,13 @@ mongoose.connect('mongodb://localhost',{ useNewUrlParser: true,  useUnifiedTopol
 
 var Handlebars = require('express-handlebars');
 
+var path = require('path')
 const config= require('config')
 
 var handlebars = Handlebars.create({
+  extname:".hbs",
+  layoutsDir: path.join(__dirname, '/views/layouts/') ,
+  partialsDir: path.join(__dirname, 'views/partials'),
   helpers:{
     list:  function(context, options) {
       var ret = "<ul>";
@@ -44,6 +48,19 @@ if(app.get('env') === 'development'){
   app.use(morgan('short'))
   console.log('morgan enabled...')
 }
+
+app.get('/cookie',async (req,res)=> {
+  res.render('cookieTest')
+})
+
+
+app.get('/cookie2',async (req,res)=> {
+  res.render('cookietest2')
+})
+
+
+var cookieParser = require('cookie-parser')
+app.use(cookieParser())
 
 
 var fileRoutes = require('./routes/files.js')

@@ -31,17 +31,24 @@ router.get('/', (req,res)=> {
 
 router.get('/create', (req,res)=> {
 
-    res.render('userRegistration')
+    res.render('user/userRegistration')
 
 }
 )
 
 router.get("/login",async (req,res)=>{
-    res.render("userlogin")
+    res.render("user/userlogin")
 })
 
 
 
+router.get('/logout',(req,res) =>{
+    console.log('logging out')
+    res.cookie('jwt_token', 'null', {maxAge: 0} );
+    res.redirect('/user/login')
+}
+
+)
 
 
 
@@ -69,6 +76,7 @@ router.post('/create',async(req,res) => {
     })
 
     await user.save();
+
 
     res.send(user)
 

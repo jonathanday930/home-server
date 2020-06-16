@@ -21,6 +21,7 @@ function isVideo(fileName){
 
 router.get('/',async (req,res)=> {
   paramObject = {link:'/files/view/'}
+
   res.render('homepage',paramObject)
 
 })

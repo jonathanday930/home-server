@@ -8,6 +8,7 @@ const jwt = require('jsonwebtoken')
 const express = require('express')
 router = express.Router()
 
+const config= require('config')
 
 const {User,validate}  = require("../models/user")
 
@@ -17,8 +18,7 @@ function isEmpty(obj) {
 }
 
 async function checkPassword(user,password) {
-    console.log(user.password)
-    console.log(password)
+
     return await bcrypt.compare(password,user.password) ;
 }
 
@@ -30,9 +30,11 @@ router.post("/",async (req,res)=>{
     if ( !user || ! await checkPassword(user,req.body.password) ){
         return res.status(400).send("Invalid username or password")
     } else{
-        const token = jwt.sign({_id:user._id},privateKey)
-        res.header('x-auth-token',token)
-        res.status(200).send('tru')
+        const token = jwt.sign( {_id:user._id, username:req.body.username},config.get("jwtPrivateKey") )
+        res.cookie('jwt_token',token , { maxAge: 3600000, httpOnly: true });
+        renderParams = {user:{username:req.body.username} }
+        res.status(200).render('user/loginSuccess',renderParams)
+
     }
 }
 )
